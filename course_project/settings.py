@@ -73,6 +73,84 @@ TEMPLATES = [
     },
 ]
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    "formatters": {
+        "verbose": {
+            "format": "{name} {levelname} {asctime} {module} {process:d} {thread:d} {message}",
+            "style": "{",
+        },
+        "simple": {
+            "format": "{levelname} {message}",
+            "style": "{",
+        },
+    },
+    'handlers': {
+        'debug_log': {
+          'level': 'DEBUG',
+          'class': 'logging.FileHandler',
+          'filename': 'logs/debug.log'
+        },
+        'info_log': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/info.log',
+            'formatter': 'verbose'
+        },
+        'warning_log': {
+            'level': 'WARNING',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/warning.log',
+            'formatter': 'verbose'
+        },
+        'error_log': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/error.log',
+            'formatter': 'verbose'
+        },
+        'critical_log': {
+            'level': 'CRITICAL',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/critical.log',
+            'formatter': 'verbose'
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['debug_log'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
+        'info': {
+            'handlers': ['info_log'],
+            'level': 'INFO',
+            'propagate': True
+        },
+        'warning': {
+            'handlers': ['warning_log'],
+            'level': 'WARNING',
+            'propagate': True
+        },
+        'error': {
+            'handlers': ['error_log'],
+            'level': 'ERROR',
+            'propagate': True
+        },
+        'critical': {
+            'handlers': ['critical_log'],
+            'level': 'CRITICAL',
+            'propagate': True
+        },
+        'crud_api.views': {
+            'handlers': ['info_log'],
+            'level': 'INFO',
+            'propagate': True
+        }
+    }
+}
+
 WSGI_APPLICATION = 'course_project.wsgi.application'
 
 

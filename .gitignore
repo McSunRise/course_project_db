@@ -1,6 +1,7 @@
 /venv
 .env
 private.pem
+/logs
 /.idea
 */__pycache__
 */*/__pycache__
