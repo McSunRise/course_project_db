@@ -54,6 +54,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.middleware.locale.LocaleMiddleware"
 ]
 
 ROOT_URLCONF = 'course_project.urls'
@@ -123,7 +124,17 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': False
         },
+        'rest_framework': {
+            'handlers': ['debug_log', 'warning_log', 'error_log', 'critical_log'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
         'crud_api.views': {
+            'handlers': ['info_log', 'warning_log', 'error_log', 'critical_log'],
+            'level': 'INFO',
+            'propagate': False
+        },
+        'crud_api.serializers': {
             'handlers': ['info_log', 'warning_log', 'error_log', 'critical_log'],
             'level': 'INFO',
             'propagate': False
