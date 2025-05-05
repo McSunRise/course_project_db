@@ -19,5 +19,5 @@ from django.urls import include, path
 from crud_api import views
 
 urlpatterns = [
-    path('', views.Home.as_view(), name='home')
+    path('', views.Orders.as_view(), name='Orders')
 ]

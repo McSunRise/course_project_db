@@ -119,40 +119,24 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'handlers': ['debug_log'],
+            'handlers': ['debug_log', 'warning_log', 'error_log', 'critical_log'],
             'level': 'DEBUG',
             'propagate': False
         },
-        'info': {
-            'handlers': ['info_log'],
-            'level': 'INFO',
-            'propagate': True
-        },
-        'warning': {
-            'handlers': ['warning_log'],
-            'level': 'WARNING',
-            'propagate': True
-        },
-        'error': {
-            'handlers': ['error_log'],
-            'level': 'ERROR',
-            'propagate': True
-        },
-        'critical': {
-            'handlers': ['critical_log'],
-            'level': 'CRITICAL',
-            'propagate': True
-        },
         'crud_api.views': {
-            'handlers': ['info_log'],
+            'handlers': ['info_log', 'warning_log', 'error_log', 'critical_log'],
             'level': 'INFO',
-            'propagate': True
+            'propagate': False
         }
     }
 }
 
 WSGI_APPLICATION = 'course_project.wsgi.application'
 
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 20
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
