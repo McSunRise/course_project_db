@@ -19,5 +19,6 @@ from django.urls import include, path
 from crud_api import views
 
 urlpatterns = [
-    path('', views.Orders.as_view(), name='Orders')
+    path('api/orders', views.OrdersViewsList.as_view(), name='OrdersList'),
+    path('api/orders/<int:pk>', views.OrdersViewsDetails.as_view(), name='OrdersDetails')
 ]

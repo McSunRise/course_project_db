@@ -134,6 +134,11 @@ LOGGING = {
             'level': 'INFO',
             'propagate': False
         },
+        'crud_api.controllers.orders': {
+            'handlers': ['info_log', 'warning_log', 'error_log', 'critical_log'],
+            'level': 'INFO',
+            'propagate': False
+        },
         'crud_api.serializers': {
             'handlers': ['info_log', 'warning_log', 'error_log', 'critical_log'],
             'level': 'INFO',

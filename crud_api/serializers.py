@@ -5,16 +5,6 @@ from dataclasses import dataclass
 
 logger = logging.getLogger(__name__)
 
-"""
-{
-    "client_id": 1,
-    "starting_address": "Точка А",
-    "finish_address": "Точка Б",
-    "price": 453,
-    "status": "Pending"
-}
-"""
-
 
 @dataclass(slots=True)
 class OrdersDM:
@@ -46,7 +36,6 @@ class OrdersSerializer(serializers.Serializer):
     status = serializers.CharField()
 
     def to_representation(self, instance):
-        logger.info(instance)
         instance = OrdersDM(**instance)
         return {
             "id": instance.id,
