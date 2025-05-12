@@ -1,9 +1,6 @@
 from rest_framework import serializers
 from datetime import datetime
-import logging
 from dataclasses import dataclass
-
-logger = logging.getLogger(__name__)
 
 
 @dataclass(slots=True)

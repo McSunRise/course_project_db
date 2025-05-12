@@ -1,8 +1,7 @@
-import logging
 from psycopg2.errors import ForeignKeyViolation
 
 from .db_controller import *
-from ..serializers import OrdersSerializer, order_convert
+from crud_api.serializers.orders_serializer import OrdersSerializer, order_convert
 
 logger = logging.getLogger(__name__)
 

@@ -1,4 +1,4 @@
-from .controllers.orders import OrdersList, OrdersDetails
+from .controllers.orders_controller import OrdersList, OrdersDetails
 from rest_framework.views import APIView
 
 
