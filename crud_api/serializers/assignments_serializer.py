@@ -6,7 +6,7 @@ from dataclasses import dataclass
 @dataclass(slots=True)
 class AssignmentsDM:
     driver_id: int
-    revenue: int
+    revenue: int = 0
     id: int = -1
     assignment_date: date = date.today()
 
@@ -23,7 +23,7 @@ class AssignmentsSerializer(serializers.Serializer):
     id = serializers.IntegerField(default=-1)
     driver_id = serializers.IntegerField()
     assignment_date = serializers.DateField(default=date.today())
-    revenue = serializers.IntegerField()
+    revenue = serializers.IntegerField(default=0)
 
     def to_representation(self, instance):
         instance = AssignmentsDM(**instance)

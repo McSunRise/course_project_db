@@ -134,7 +134,47 @@ LOGGING = {
             'level': 'INFO',
             'propagate': False
         },
-        'crud_api.controllers.orders': {
+        'crud_api.controllers.orders_controller': {
+            'handlers': ['info_log', 'warning_log', 'error_log', 'critical_log'],
+            'level': 'INFO',
+            'propagate': False
+        },
+        'crud_api.controllers.assignments_controller': {
+            'handlers': ['info_log', 'warning_log', 'error_log', 'critical_log'],
+            'level': 'INFO',
+            'propagate': False
+        },
+        'crud_api.controllers.cars_controller': {
+            'handlers': ['info_log', 'warning_log', 'error_log', 'critical_log'],
+            'level': 'INFO',
+            'propagate': False
+        },
+        'crud_api.controllers.clients_controller': {
+            'handlers': ['info_log', 'warning_log', 'error_log', 'critical_log'],
+            'level': 'INFO',
+            'propagate': False
+        },
+        'crud_api.controllers.drivers_controller': {
+            'handlers': ['info_log', 'warning_log', 'error_log', 'critical_log'],
+            'level': 'INFO',
+            'propagate': False
+        },
+        'crud_api.controllers.orders_drivers_controller': {
+            'handlers': ['info_log', 'warning_log', 'error_log', 'critical_log'],
+            'level': 'INFO',
+            'propagate': False
+        },
+        'crud_api.controllers.positions_controller': {
+            'handlers': ['info_log', 'warning_log', 'error_log', 'critical_log'],
+            'level': 'INFO',
+            'propagate': False
+        },
+        'crud_api.controllers.staff_controller': {
+            'handlers': ['info_log', 'warning_log', 'error_log', 'critical_log'],
+            'level': 'INFO',
+            'propagate': False
+        },
+        'crud_api.controllers.tech_inspections_controller': {
             'handlers': ['info_log', 'warning_log', 'error_log', 'critical_log'],
             'level': 'INFO',
             'propagate': False

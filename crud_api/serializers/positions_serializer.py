@@ -9,7 +9,7 @@ class PositionsDM:
     id: int = -1
 
 
-def positions_convert(orders_drivers: list[tuple]):
+def position_convert(orders_drivers: list[tuple]):
     result = []
     for i in orders_drivers:
         row = dict(id=i[0], position_name=i[1], salary=i[2])
