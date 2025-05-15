@@ -4,6 +4,7 @@ function CreateForm({ table, onSuccess }) {
   const [formData, setFormData] = useState({});
   const [fields, setFields] = useState([]);
   const [error, setError] = useState(null);
+  const [showForm, setShowForm] = useState(false); // состояние отображения
 
   // Загружаем пример записи, чтобы определить поля
   useEffect(() => {
@@ -28,9 +29,7 @@ function CreateForm({ table, onSuccess }) {
     e.preventDefault();
     fetch(`http://localhost:8000/api/${table}`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData)
     })
       .then(res => {
@@ -38,33 +37,42 @@ function CreateForm({ table, onSuccess }) {
         return res.json();
       })
       .then(() => {
-        onSuccess(); // перезагрузить список
+        onSuccess();
         setFormData(fields.reduce((obj, key) => ({ ...obj, [key]: '' }), {}));
+        setError(null);
+        setShowForm(false); // скрыть форму после создания
       })
       .catch(err => setError(err.message));
   };
 
-  if (!fields.length) return <div>Загрузка полей...</div>;
+  if (!fields.length) return null;
 
   return (
     <div style={{ marginTop: '20px' }}>
-      <h3>Добавить запись в таблицу: {table}</h3>
-      <form onSubmit={handleSubmit}>
-        {fields.map(field => (
-          <div key={field} style={{ marginBottom: '10px' }}>
-            <label>{field}: </label>
-            <input
-              type="text"
-              name={field}
-              value={formData[field]}
-              onChange={handleChange}
-              required
-            />
-          </div>
-        ))}
-        <button type="submit">Добавить</button>
-      </form>
-      {error && <p style={{ color: 'red' }}>Ошибка: {error}</p>}
+      {!showForm ? (
+        <button onClick={() => setShowForm(true)}>Создать запись</button>
+      ) : (
+        <div style={{ border: '1px solid #ccc', padding: '10px', marginTop: '10px' }}>
+          <h3>Создание новой записи</h3>
+          <form onSubmit={handleSubmit}>
+            {fields.map(field => (
+              <div key={field} style={{ marginBottom: '10px' }}>
+                <label>{field}: </label>
+                <input
+                  type="text"
+                  name={field}
+                  value={formData[field]}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            ))}
+            <button type="submit">Добавить</button>{' '}
+            <button type="button" onClick={() => setShowForm(false)}>Отмена</button>
+          </form>
+          {error && <p style={{ color: 'red' }}>Ошибка: {error}</p>}
+        </div>
+      )}
     </div>
   );
 }

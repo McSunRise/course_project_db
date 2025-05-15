@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-function DataFetcher({ table, reload }) {
+function DataFetcher({ table, reload, onSelectRow }) {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
@@ -24,7 +24,7 @@ function DataFetcher({ table, reload }) {
   return (
     <div style={{ marginTop: '20px' }}>
       <h2>Содержимое {table}</h2>
-      <table border="1" cellPadding="8" style={{ borderCollapse: 'collapse' }}>
+      <table border="1" cellPadding="8" style={{ borderCollapse: 'collapse', cursor: 'pointer' }}>
         <thead>
           <tr>
             {Object.keys(data[0] || {}).map((key) => (
@@ -34,7 +34,11 @@ function DataFetcher({ table, reload }) {
         </thead>
         <tbody>
           {data.map((item) => (
-            <tr key={item.id || JSON.stringify(item)}>
+            <tr
+              key={item.id || JSON.stringify(item)}
+              onClick={() => onSelectRow?.(item)} // ✅ Безопасный вызов
+              style={{ backgroundColor: '#f9f9f9' }}
+            >
               {Object.keys(item).map((key) => (
                 <td key={key}>{String(item[key])}</td>
               ))}
@@ -42,6 +46,7 @@ function DataFetcher({ table, reload }) {
           ))}
         </tbody>
       </table>
+      <p style={{ marginTop: '10px' }}>💡 Нажмите на запись, чтобы изменить её</p>
     </div>
   );
 }
