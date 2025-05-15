@@ -1,4 +1,7 @@
 SET search_path TO course_project, practice, lab;
+
+CREATE TYPE car_status AS ENUM ('готова', 'в ремонте', 'списана');
+CREATE TYPE order_status AS ENUM ('выполнен', 'принят', 'отменён');
 CREATE TABLE Drivers(
 	id serial PRIMARY KEY,
 	full_name text,
@@ -13,7 +16,7 @@ CREATE TABLE Cars(
 	car_name text,
 	color text,
 	VIN text UNIQUE,
-	status text
+	status car_status
 );
 
 CREATE TABLE Clients(
@@ -31,13 +34,13 @@ CREATE TABLE Orders(
 	starting_address text,
 	finish_address text,
 	price SMALLINT,
-	status text
+	status order_status
 );
 
 CREATE TABLE Assignments(
 	id serial PRIMARY KEY,
 	driver_id serial REFERENCES Drivers(id),
-	assignment_date date NOT NULL,
+	assignment_date date NOT NULL DEFAULT current_date CHECK (assignment_date <= current_date),
 	revenue integer DEFAULT 0
 );
 
@@ -70,6 +73,21 @@ CREATE TABLE Tech_Inspection(
 	work_cost integer
 );
 
+CREATE OR REPLACE FUNCTION set_order_price()
+RETURNS TRIGGER AS $$
+BEGIN
+	UPDATE Orders_Drivers
+	SET order_price = (SELECT price FROM orders WHERE id = order_id)
+	WHERE order_id = NEW.order_id;
+	RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_set_order_price
+AFTER INSERT ON Orders_Drivers
+FOR EACH ROW
+EXECUTE FUNCTION set_order_price();
+
 CREATE OR REPLACE FUNCTION update_driver_rating()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -81,7 +99,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER trg_update_driver_rating
-AFTER INSERT ON Orders_Drivers
+AFTER INSERT OR UPDATE ON Orders_Drivers
 FOR EACH ROW
 EXECUTE FUNCTION update_driver_rating();
 
@@ -89,8 +107,8 @@ EXECUTE FUNCTION update_driver_rating();
 CREATE OR REPLACE FUNCTION validate_assignment_date()
 RETURNS TRIGGER AS $$
 BEGIN
-    IF NEW.assignment_date < CURRENT_DATE THEN
-        RAISE EXCEPTION 'Дата назначения не может быть в прошлом';
+    IF NEW.assignment_date <> CURRENT_DATE THEN
+        RAISE EXCEPTION 'Новая дата назначения не может быть не текущей датой';
     END IF;
     RETURN NEW;
 END;
@@ -112,7 +130,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER trg_update_assignment_revenue
-AFTER INSERT ON Orders_Drivers
+AFTER INSERT OR UPDATE ON Orders_Drivers
 FOR EACH ROW
 EXECUTE FUNCTION update_assignment_revenue();
 

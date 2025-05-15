@@ -10,7 +10,7 @@ INSERT INTO Drivers (full_name, phone_number, passport) VALUES
 ('Сидоров Алексей', '+79991234567', '3333 333333'),
 ('Козлов Андрей', '+79997654321', '4444 444444');
 INSERT INTO Cars (plate_number, car_name, color, VIN, status) VALUES
-('A123BC777', 'Toyota Camry', 'Черный', 'JT123456789012345', 'готов'),
+('A123BC777', 'Toyota Camry', 'Черный', 'JT123456789012345', 'готова'),
 ('B456DE777', 'Hyundai Solaris', 'Белый', 'KM812345678901234', 'в ремонте');
 INSERT INTO Clients (full_name, rating, phone, email) VALUES
 ('Анна Смирнова', 4.7, '+79991112233', 'anna@example.com'),

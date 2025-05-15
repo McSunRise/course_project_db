@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crud_api',
-    'rest_framework'
+    'rest_framework',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -54,8 +55,11 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "django.middleware.locale.LocaleMiddleware"
+    "django.middleware.locale.LocaleMiddleware",
+    "corsheaders.middleware.CorsMiddleware"
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'course_project.urls'
 
@@ -174,7 +178,7 @@ LOGGING = {
             'level': 'INFO',
             'propagate': False
         },
-        'crud_api.controllers.tech_inspections_controller': {
+        'crud_api.controllers.tech_inspection_controller': {
             'handlers': ['info_log', 'warning_log', 'error_log', 'critical_log'],
             'level': 'INFO',
             'propagate': False
