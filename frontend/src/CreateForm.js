@@ -1,12 +1,11 @@
+// CreateForm.js
 import React, { useState, useEffect } from 'react';
 
 function CreateForm({ table, onSuccess }) {
   const [formData, setFormData] = useState({});
   const [fields, setFields] = useState([]);
   const [error, setError] = useState(null);
-  const [showForm, setShowForm] = useState(false); // состояние отображения
 
-  // Загружаем пример записи, чтобы определить поля
   useEffect(() => {
     fetch(`http://localhost:8000/api/${table}`)
       .then(res => res.json())
@@ -40,7 +39,6 @@ function CreateForm({ table, onSuccess }) {
         onSuccess();
         setFormData(fields.reduce((obj, key) => ({ ...obj, [key]: '' }), {}));
         setError(null);
-        setShowForm(false); // скрыть форму после создания
       })
       .catch(err => setError(err.message));
   };
@@ -48,31 +46,23 @@ function CreateForm({ table, onSuccess }) {
   if (!fields.length) return null;
 
   return (
-    <div style={{ marginTop: '20px' }}>
-      {!showForm ? (
-        <button onClick={() => setShowForm(true)}>Создать запись</button>
-      ) : (
-        <div style={{ border: '1px solid #ccc', padding: '10px', marginTop: '10px' }}>
-          <h3>Создание новой записи</h3>
-          <form onSubmit={handleSubmit}>
-            {fields.map(field => (
-              <div key={field} style={{ marginBottom: '10px' }}>
-                <label>{field}: </label>
-                <input
-                  type="text"
-                  name={field}
-                  value={formData[field]}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            ))}
-            <button type="submit">Добавить</button>{' '}
-            <button type="button" onClick={() => setShowForm(false)}>Отмена</button>
-          </form>
-          {error && <p style={{ color: 'red' }}>Ошибка: {error}</p>}
-        </div>
-      )}
+    <div style={{ border: '1px solid #ccc', padding: '10px', marginTop: '20px' }}>
+      <form onSubmit={handleSubmit}>
+        {fields.map(field => (
+          <div key={field} style={{ marginBottom: '10px' }}>
+            <label>{field}: </label>
+            <input
+              type="text"
+              name={field}
+              value={formData[field]}
+              onChange={handleChange}
+              required
+            />
+          </div>
+        ))}
+        <button type="submit">Добавить</button>
+      </form>
+      {error && <p style={{ color: 'red' }}>Ошибка: {error}</p>}
     </div>
   );
 }

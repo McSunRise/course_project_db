@@ -45,7 +45,7 @@ CREATE TABLE Assignments(
 );
 
 CREATE TABLE Orders_Drivers(
-	order_id serial PRIMARY KEY REFERENCES Orders (id),
+	id serial PRIMARY KEY REFERENCES Orders (id),
 	driver_id serial REFERENCES Drivers (id),
 	car_id serial REFERENCES Cars (id),
 	order_price SMALLINT
@@ -77,8 +77,8 @@ CREATE OR REPLACE FUNCTION set_order_price()
 RETURNS TRIGGER AS $$
 BEGIN
 	UPDATE Orders_Drivers
-	SET order_price = (SELECT price FROM orders WHERE id = order_id)
-	WHERE order_id = NEW.order_id;
+	SET order_price = (SELECT price FROM orders WHERE orders.id = orders_drivers.id)
+	WHERE id = NEW.id;
 	RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -88,12 +88,13 @@ AFTER INSERT ON Orders_Drivers
 FOR EACH ROW
 EXECUTE FUNCTION set_order_price();
 
+
 CREATE OR REPLACE FUNCTION update_driver_rating()
 RETURNS TRIGGER AS $$
 BEGIN
     UPDATE Drivers
     SET rating = rating + (5 - rating) * 0.05
-    WHERE id = NEW.driver_id;
+    WHERE Drivers.id = NEW.driver_id;
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -102,22 +103,6 @@ CREATE TRIGGER trg_update_driver_rating
 AFTER INSERT OR UPDATE ON Orders_Drivers
 FOR EACH ROW
 EXECUTE FUNCTION update_driver_rating();
-
-
-CREATE OR REPLACE FUNCTION validate_assignment_date()
-RETURNS TRIGGER AS $$
-BEGIN
-    IF NEW.assignment_date <> CURRENT_DATE THEN
-        RAISE EXCEPTION 'Новая дата назначения не может быть не текущей датой';
-    END IF;
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER trg_validate_assignment_date
-BEFORE INSERT ON Assignments
-FOR EACH ROW
-EXECUTE FUNCTION validate_assignment_date();
 
 CREATE OR REPLACE FUNCTION update_assignment_revenue()
 RETURNS TRIGGER AS $$

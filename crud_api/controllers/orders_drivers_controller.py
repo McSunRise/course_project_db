@@ -33,8 +33,8 @@ class OrdersDriversList:
         try:
             with conn.cursor() as cur:
                 cur.execute('SET search_path TO course_project')
-                cur.execute(f"INSERT INTO Orders_Drivers (order_id, driver_id, car_id) VALUES ("
-                            f"{data.data['order_id']}, {data.data['driver_id']}, {data.data['car_id']})"
+                cur.execute(f"INSERT INTO Orders_Drivers (id, driver_id, car_id) VALUES ("
+                            f"{data.data['id']}, {data.data['driver_id']}, {data.data['car_id']})"
                             f"RETURNING *")
                 res = cur.fetchall()
         except AttributeError:
@@ -59,7 +59,7 @@ class OrdersDriversDetails:
         try:
             with conn.cursor() as cur:
                 cur.execute('SET search_path TO course_project')
-                cur.execute(f'SELECT * FROM Orders_Drivers WHERE order_id = {pk}')
+                cur.execute(f'SELECT * FROM Orders_Drivers WHERE id = {pk}')
                 res = order_driver_convert(cur.fetchall())
                 serializer = OrdersDriversSerializer(res, many=True)
         except AttributeError:
@@ -78,7 +78,7 @@ class OrdersDriversDetails:
                 cur.execute('SET search_path TO course_project')
                 cur.execute(f"UPDATE Orders_Drivers SET driver_id = {data.data['driver_id']},"
                             f"car_id = {data.data['car_id']} "
-                            f"WHERE order_id = {pk} RETURNING *")
+                            f"WHERE id = {pk} RETURNING *")
                 res = cur.fetchall()
         except AttributeError:
             return Response(status=500, data='Connection with database was NOT established')
@@ -98,7 +98,7 @@ class OrdersDriversDetails:
         try:
             with conn.cursor() as cur:
                 cur.execute('SET search_path TO course_project')
-                cur.execute(f"DELETE FROM Orders_Drivers WHERE order_id = {pk}")
+                cur.execute(f"DELETE FROM Orders_Drivers WHERE id = {pk}")
         except AttributeError as exc:
             return Response(status=500, data='Connection with database was NOT established')
         except Exception as exc:

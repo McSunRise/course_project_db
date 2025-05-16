@@ -103,7 +103,6 @@ function App() {
 
       {editingItem && (
         <>
-          <h3>✏️ Редактирование записи ID {editingItem.id}</h3>
           <EditForm
             table={selectedTable}
             item={editingItem}

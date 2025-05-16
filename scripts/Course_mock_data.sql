@@ -21,7 +21,7 @@ INSERT INTO Orders (client_id, starting_address, finish_address, price, status) 
 INSERT INTO Assignments (driver_id, assignment_date, revenue) VALUES
 (1, CURRENT_DATE, 0),
 (2, CURRENT_DATE, 0);
-INSERT INTO Orders_Drivers (order_id, driver_id, car_id, order_price) VALUES
+INSERT INTO Orders_Drivers (id, driver_id, car_id, order_price) VALUES
 (1, 1, 1, 350),
 (2, 2, 2, 420);
 INSERT INTO Tech_Inspection (car_id, mechanic_id, work_type, work_cost) VALUES

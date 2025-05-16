@@ -1,3 +1,4 @@
+// EditForm.js
 import React, { useState } from 'react';
 
 function EditForm({ table, item, onSuccess, onCancel }) {
@@ -27,24 +28,15 @@ function EditForm({ table, item, onSuccess, onCancel }) {
       .catch(err => setError(err.message));
   };
 
-  const handleDelete = () => {
-    if (!window.confirm('Вы уверены, что хотите удалить эту запись?')) return;
-    fetch(`http://localhost:8000/api/${table}/${item.id}`, {
-      method: 'DELETE'
-    })
-      .then(res => {
-        if (!res.ok) throw new Error('Ошибка при удалении');
-        onSuccess();
-        onCancel();
-      })
-      .catch(err => setError(err.message));
+  const handleReset = () => {
+    setFormData({ ...item }); // возвращаем начальные значения
   };
 
   return (
     <div style={{ border: '1px solid #ccc', padding: '10px', marginTop: '20px' }}>
       <h3>Редактирование записи #{item.id}</h3>
       <form onSubmit={handleSubmit}>
-        {Object.keys(formData).map((key) => (
+        {Object.keys(formData).map((key) =>
           key !== 'id' && (
             <div key={key} style={{ marginBottom: '10px' }}>
               <label>{key}: </label>
@@ -56,12 +48,9 @@ function EditForm({ table, item, onSuccess, onCancel }) {
               />
             </div>
           )
-        ))}
+        )}
         <button type="submit">Сохранить</button>{' '}
-        <button type="button" onClick={onCancel}>Отмена</button>{' '}
-        <button type="button" onClick={handleDelete} style={{ color: 'red' }}>
-          Удалить
-        </button>
+        <button type="button" onClick={handleReset}>Отмена изменений</button>{' '}
       </form>
       {error && <p style={{ color: 'red' }}>Ошибка: {error}</p>}
     </div>
