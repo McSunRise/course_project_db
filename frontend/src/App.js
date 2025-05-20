@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import DataFetcher from './DataFetcher';
 import CreateForm from './CreateForm';
 import EditForm from './EditForm';
@@ -9,6 +9,7 @@ function App() {
   const [editingItem, setEditingItem] = useState(null);
   const [creating, setCreating] = useState(false);
   const [showTable, setShowTable] = useState(true);
+  const dataFetcherRef = useRef(null); // реф для обновления данных
 
   const handleEdit = (item) => {
     setEditingItem(item);
@@ -27,6 +28,7 @@ function App() {
         alert('Удалено успешно');
         setEditingItem(null);
         setShowTable(true);
+        dataFetcherRef.current?.refresh(); // обновить таблицу
       })
       .catch((err) => alert(err.message));
   };
@@ -81,6 +83,7 @@ function App() {
             ➕ Создать запись
           </button>
           <DataFetcher
+            ref={dataFetcherRef}
             table={selectedTable}
             onEdit={handleEdit}
             onDelete={handleDelete}
@@ -95,6 +98,7 @@ function App() {
             table={selectedTable}
             onSuccess={() => {
               setCreating(false);
+              dataFetcherRef.current?.refresh(); // обновляем таблицу
             }}
           />
           <button onClick={handleBack} style={{ marginTop: '10px' }}>🔙 Назад</button>
@@ -109,7 +113,9 @@ function App() {
             onSuccess={() => {
               setEditingItem(null);
               setShowTable(true);
+              dataFetcherRef.current?.refresh(); // обновить после изменения
             }}
+            onCancel={handleBack}
           />
           <button
             onClick={() => handleDelete(editingItem)}
